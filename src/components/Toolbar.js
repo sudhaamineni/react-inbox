@@ -8,6 +8,7 @@ const Toolbar = ({
                      handleRemoveMessages,
                      handleApplyLabel,
                      handleRemoveLabel,
+                     composeButtonClicked
                  }) => {
 
     let isMessagesSelected = true
@@ -26,10 +27,16 @@ const Toolbar = ({
       <div className="row toolbar">
   <div className="col-md-12">
     <p className="pull-right">
-    <span classNameName="badge badge">{unreadMessages.length}</span>
+    <span className="badge badge">{unreadMessages.length}</span>
                   {unreadMessages.length === 1 ? `unread message` : `unread messages`}
     </p>
+   <a className="btn btn-danger" onClick={composeButtonClicked}>
+     <i className="fa fa-plus"></i>
+   </a>
 
+   <button className="btn btn-default">
+     <i className="fa fa-minus-square-o"></i>
+   </button>
     <button className="btn btn-default" onClick={handleToolbarMessageCheckboxClick}>
                     <i className={checkedMessagesStyle}></i>
     </button>

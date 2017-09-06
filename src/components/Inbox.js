@@ -1,14 +1,23 @@
 import React, {Component} from 'react'
 import MessageList from './MessagesList'
+import Compose from './ComposeMessage'
 import Toolbar from './Toolbar'
 
 export class Inbox extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            messages: props.messages
+          messages: [],
+          composeMessageDisplayed: false
         }
     }
+    async componentDidMount() {
+      const msgResponse = await fetch(`${process.env.REACT_APP_API_URL}/api/messages`)
+
+      const msgJson = await msgResponse.json()
+
+    this.setState({messages: msgJson._embedded.messages,})
+  }
     handleCheckboxChange = (e, id) => {
        const newMessages = this.state.messages.map(message => {
            if (message.id === id) {
@@ -103,7 +112,21 @@ export class Inbox extends Component {
 
        this.setState({messages: newMessages})
    }
+   composeButtonClicked = () => {
+       this.setState({composeMessageDisplayed: !this.state.composeMessageDisplayed})
+     }
 
+     onSendMessageClick = async (subject, body) => {
+       const request = {"subject": subject, "body": body}
+       const response = await fetch(`${process.env.REACT_APP_API_URL}/api/messages`, {
+           method: 'POST',
+           body: JSON.stringify(request),
+           headers: {
+               'Content-Type': 'application/json',
+               'Accept': 'application/json',
+           }
+         })
+       }
     render() {
             return (
                 <div>
@@ -115,7 +138,9 @@ export class Inbox extends Component {
                    handleDeleteMessages={this.handleRemoveMessages}
                    handleApplyLabel={this.handleApplyLabel}
                    handleRemoveLabel={this.handleRemoveLabel}
+                    composeButtonClicked={this.composeButtonClicked}
                />
+               {this.state.composeMessageDisplayed && <Compose onSendMessageClick={this.onSendMessageClick}/>}
                <MessageList
                    messages={this.state.messages}
                    checkboxChange={this.handleCheckboxChange}
