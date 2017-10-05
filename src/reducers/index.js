@@ -74,11 +74,26 @@ function messages(state = { all: [], ComposeMessage:false }, action) {
                 ...state,
                 all: action.newMessages
               }
-      
+              case MESSAGE_BODY_REQUEST_SUCCESS:
+     return {
+       ...state,
+       byId: setPropertyValue(state.byId, action.id, 'body', action.body)
+     }
+
     default:
       return state
   }
 }
+function setPropertyValue(byId, id, property, value) {
+  return {
+    ...byId,
+    [id] : {
+      ...byId[id],
+      [property]: value
+    }
+  }
+}
+
 export default combineReducers({
   messages,
 })

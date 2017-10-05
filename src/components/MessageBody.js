@@ -1,24 +1,29 @@
-import React from 'react'
+import React, {PropTypes} from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import {fetchMessageBody} from '../actions'
 import {withRouter} from 'react-router-dom'
 
 export class MessageBody extends React.Component {
+  static propTypes = {
+      fetchMessageBody: PropTypes.fun
+  }
   constructor(props){
     super(props);
+
   }
   componentDidMount() {
     console.log("test", this.props);
-    this.props.fetchMessageBody(this.props.id)
+    fetchMessageBody(this.props.id)
 
     }
 
   render() {
+    const {message} =this.props;
     return (
       <div className="row message-body">
         <div className="col-xs-11 col-xs-offset-1">test
-          { this.props.body }
+          { message }
         </div>
       </div>
     )
