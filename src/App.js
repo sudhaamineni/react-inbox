@@ -1,15 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Inbox from './components/Inbox';
 class App extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      messages: [],
-      composeMessageDisplayed: false
-    }
-  }
 
   render() {
 
@@ -20,7 +12,7 @@ class App extends Component {
           <h2>React Inbox</h2>
         </div>
 
-        <Inbox />
+
       </div>
 
     );

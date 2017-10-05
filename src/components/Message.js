@@ -1,10 +1,15 @@
 import React from 'react'
+import { selectMessage, handleStarChange } from '../actions'
+import {connect }  from 'react-redux'
+import { bindActionCreators }  from 'redux'
+import {Link, Route, withRouter} from 'react-router-dom'
+import {MessageBody} from './MessageBody'
 
 const Message = ({
                      id,
                      message,
-                     checkboxChange,
-                     starChange,
+                     selectMessage,
+                     handleStarChange,
                  }) => {
 
     let rowStyle = "row message"
@@ -30,12 +35,12 @@ const Message = ({
                         <input
                             type="checkbox"
                             name="checkbox"
-                            onChange={(e) => checkboxChange(e, id)}
+                            onChange={(e) => selectMessage(id)}
                             checked={message.selected ? true : false}
                         />
                     </div>
                     <div className="col-xs-2">
-                        <i className={starStyle} onClick={(e) => starChange(e, id)}></i>
+                        <i className={starStyle} onClick={(e) => handleStarChange(id)}></i>
                     </div>
                 </div>
             </div>
@@ -44,12 +49,25 @@ const Message = ({
                     <span key={i} className="label label-warning">{msg}</span>
                 )
                 }
-                <a href="#">
-                    {message.subject}
-                </a>
+              <Link to={`/messages/${id}`}>{message.subject}</Link>
+
+                    <Route
+                  key="message-body"
+                  path={ `/messages/${id}` }
+                  render={ props => {
+                    return <MessageBody id={id} {...props} />
+                  }} />
             </div>
         </div>
+
     )
 }
 
-export default Message
+const mapStateToProps = state =>({
+
+})
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+  selectMessage,handleStarChange
+}, dispatch)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Message))

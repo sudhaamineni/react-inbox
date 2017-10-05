@@ -1,12 +1,10 @@
 import React,{form} from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { toggleComposMessage, sendMessage } from '../actions'
+
 class ComposeMessage extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = ({
-      subject: "",
-      body: ""
-    })
-  }
+
   onSubjectChanged = (subject) => {
     this.setState({subject: subject})
   }
@@ -29,7 +27,7 @@ render() {
           </div>
   </div>
   <div className="form-group">
-    <label for="body" className="col-sm-2 control-label">Body</label>
+    <label htmlFor="body" className="col-sm-2 control-label">Body</label>
     <div className="col-sm-8">
            <textarea name="body" id="body" className="form-control" onChange={(e) => this.onBodyChanged(e.target.value)}></textarea></div>
   </div>
@@ -38,7 +36,7 @@ render() {
     <input type="submit" value="Send" className="btn btn-primary" onClick={
             (e) => {
               e.preventDefault()
-              this.props.onSendMessageClick(this.state.subject, this.state.body)
+              this.props.sendMessage(this.state.subject, this.state.body,this.props.history)
             }}/>
     </div>
   </div>
@@ -46,5 +44,10 @@ render() {
 )
 }
 }
+const mapDispatchToProps = dispatch => bindActionCreators({
+  toggleComposMessage, sendMessage
+}, dispatch)
 
-export default ComposeMessage;
+export default connect(null,
+  mapDispatchToProps
+)(ComposeMessage);
