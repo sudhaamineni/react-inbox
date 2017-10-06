@@ -57,7 +57,7 @@ const Toolbar = ({
       Mark As Read
     </button>
 
-    <button className="btn btn-default" disabled={!isMessagesSelected} onClick={()=>markAsUnread(messages)}>
+    <button title="Mark as Unread" className="btn btn-default" disabled={!isMessagesSelected} onClick={()=>markAsUnread(messages)}>
       Mark As Unread
     </button>
 
